@@ -29,7 +29,7 @@ export const connectSocket = () => {
       //创建房间
       console.log(userInfo);
       const { roomId } = userInfo;
-      socket.to(roomId).emit("cast", userInfo);
+      socket.to(roomId).emit("user-join", userInfo);
     });
   });
 
