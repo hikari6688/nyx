@@ -18,10 +18,18 @@ export const connectSocket = () => {
         socket.id
       } at ${new Date().toLocaleString()}`
     );
-    socket.emit("hello", "world");
     socket.on("chat", (arg) => {
-      console.log(arg);
       socket.broadcast.emit("cast", { ...arg, id: socket.id });
+    });
+    socket.on("create-room", (uuid) => {
+      console.log(`create room with id:${uuid}`);
+    });
+    socket.join(socket.id);
+    socket.on("join-room", (userInfo) => {
+      //创建房间
+      console.log(userInfo);
+      const { roomId } = userInfo;
+      socket.to(roomId).emit("cast", userInfo);
     });
   });
 

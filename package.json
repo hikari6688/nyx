@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "serve": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "devDependencies": {
     "@types/koa": "^2.13.4",
