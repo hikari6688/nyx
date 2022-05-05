@@ -19,17 +19,24 @@ export const connectSocket = () => {
       } at ${new Date().toLocaleString()}`
     );
     socket.on("chat", (arg) => {
-      socket.broadcast.emit("cast", { ...arg, id: socket.id });
+      console.log(arg)
+      const { roomId } = arg;
+      const joinId = roomId ? roomId : "000xx";
+      socket.broadcast.to(joinId).emit("cast", { ...arg});
     });
     socket.on("create-room", (uuid) => {
       console.log(`create room with id:${uuid}`);
     });
-    socket.join(socket.id);
     socket.on("join-room", (userInfo) => {
       //创建房间
-      console.log(userInfo);
       const { roomId } = userInfo;
-      socket.to(roomId).emit("user-join", userInfo);
+      const joinId = roomId ? roomId : "000xx";
+      socket.join(joinId);
+      socket.to(joinId).emit("user-join", {
+        ...userInfo,
+        time: new Date().toLocaleTimeString(),
+        type: "enterTip",
+      });
     });
   });
 
